@@ -1,0 +1,15 @@
+[core]
+	editor = vim
+[http]
+	postBuffer = 157286400
+[user]
+	email = 91019650+RZ781@users.noreply.github.com
+	name = R Z
+[pull]
+	rebase = false
+[alias]
+	graph = log --graph --oneline
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true

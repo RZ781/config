@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<labwc_config>
+	<core>
+		<decoration>server</decoration>
+		<gap>0</gap>
+		<adaptiveSync>no</adaptiveSync>
+		<autoEnableOutputs>yes</autoEnableOutputs>
+		<reuseOutputMode>yes</reuseOutputMode>
+		<primarySelection>yes</primarySelection>
+	</core>
+	<placement>
+		<policy>cursor</policy>
+	</placement>
+	<windowSwitcher show="yes" preview="yes" outlines="yes" allWorkspaces="no">
+		<fields>
+			<field content="type" width="10%" />
+			<field content="identifier" width="10%" />
+			<field content="trimmed_identifier" width="10%" />
+			<field content="icon" width="10%" />
+			<field content="desktop_entry_name" width="10%" />
+			<field content="title" width="10%" />
+			<field content="workspace" width="10%" />
+			<field content="state" width="10%" />
+			<field content="type_short" width="10%" />
+			<field content="output" width="10%" />
+		</fields>
+	</windowSwitcher>
+	<resistance>
+		<screenEdgeStrength>20</screenEdgeStrength>
+		<windowEdgeStrength>20</windowEdgeStrength>
+		<unSnapThreshold>20</unSnapThreshold>
+		<unMaximizeThreshold>150</unMaximizeThreshold>
+	</resistance>
+	<focus>
+		<followMouse>no</followMouse>
+		<followMouseRequiresMovement>yes</followMouseRequiresMovement>
+		<raiseOnFocus>yes</raiseOnFocus>
+	</focus>
+	<snapping corner="10" cornerRange="10" notifyClient="always">
+		<overlay>
+			<enabled>yes</enabled>
+			<delay inner="500" outer="500"/>
+		</overlay>
+	</snapping>
+	<regions>
+		<region name="snap-1" x="10%" y="10%" width="80%" height="80%" />
+	</regions>
+</labwc_config>
