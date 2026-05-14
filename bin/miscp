@@ -1,0 +1,105 @@
+#!/bin/sh
+
+fail() {
+	echo "$PROGRAM_NAME: $1" >&2
+	exit 1
+}
+
+player() {
+	if [ -p "$PIPE" ] ; then
+		fail "pipe already exists, $PROGRAM_NAME may already be running or stopped incorrectly, use $PROGRAM_NAME -f to run anyways"
+	fi
+	mkfifo "$PIPE" || exit 1
+	while true ; do
+		cat
+	done
+}
+
+PROGRAM_NAME="$0"
+DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/miscp"
+PIPE="${XDG_RUNTIME_DIR:-$DATA_DIR}/miscp.pipe"
+mkdir -p "$DATA_DIR" || exit
+
+HELP_TEXT='Options:
+-i <file> <song>	installs <file> as <song>
+-u <url> <song>		installs file from <url> as <song>
+-y <url> <song>		installs audio from <url> as <song> using yt-dlp
+-d <song>		deletes <song>
+-t <tag>		creates <tag>
+-T <tag>		deletes <tag>
+-a <song> <tag>		adds <song> to <tag>
+-A <song> <tag>		removes <song> from <tag>
+-p <tag>		plays all songs in <tag> shuffled
+'
+
+# -s start
+# -f force start
+# -S stop
+
+case "$1" in
+	"-i")
+		if [ $# -ne 3 ] ; then
+			fail "$1 expects 2 arguments"
+		fi
+		ffmpeg -i "$2" "$DATA_DIR/$3.mp3"
+		;;
+	"-u")
+		if [ $# -ne 3 ] ; then
+			fail "$1 expects 2 arguments"
+		fi
+		curl "$2" > "$DATA_DIR/tmp" || exit 1
+		ffmpeg -i "$DATA_DIR/tmp" "$DATA_DIR/$3.mp3"
+		rm "$DATA_DIR/tmp"
+		;;
+	"-y")
+		if [ $# -ne 3 ] ; then
+			fail "$1 expects 2 arguments"
+		fi
+		yt-dlp "$2" -o "$DATA_DIR/tmp" || exit 1
+		ffmpeg -i "$DATA_DIR"/tmp* "$DATA_DIR/$3.mp3"
+		rm "$DATA_DIR"/tmp*
+		;;
+	"-d")
+		if [ $# -ne 2 ] ;then
+			fail "$1 expects 1 argument"
+		fi
+		rm "$DATA_DIR/$2.mp3"
+		;;
+	"-t")
+		if [ $# -ne 2 ] ; then
+			fail "$1 expects 1 argument"
+		fi
+		mkdir "$DATA_DIR/$2.d"
+		;;
+	"-T")
+		if [ $# -ne 2 ] ; then
+			fail "$1 expects 1 argument"
+		fi
+		if [ -d "$DATA_DIR/$2.d" ] ; then
+			rm -r "$DATA_DIR/$2.d"
+		else
+			fail "$2 is not a tag"
+		fi
+		;;
+	"-a")
+		if [ $# -ne 3 ] ; then
+			fail "$1 expects 2 arguments"
+		fi
+		if [ ! -r "$DATA_DIR/$2.mp3" ] ; then
+			fail "$2 is not a song"
+		fi
+		ln -s "$DATA_DIR/$2.mp3" "$DATA_DIR/$3.d/$2.mp3"
+		;;
+	"-A")
+		if [ $# -ne 3 ] ; then
+			fail "$1 expects 2 arguments"
+		fi
+		rm "$DATA_DIR/$3.d/$2.mp3"
+		;;
+	*)
+		echo "unknown option $1" >&2
+		echo "$PROGRAM_NAME:" >&2
+		echo "$HELP_TEXT" >&2
+		exit 1
+		;;
+esac

@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+import subprocess
+
+sw = 1281
+sh = 800
+
+subprocess.run(["swaymsg", "input", "*", "map_from_region", "0x0", "1x1"])
+slurp = subprocess.run(["slurp"], stdout=subprocess.PIPE)
+coords, size = slurp.stdout.decode("utf-8").strip().split()
+x, y = map(int, coords.split(","))
+w, h = map(int, size.split("x"))
+coord1 = f"{round(x/sw, 3)}x{round(y/sh, 3)}"
+coord2 = f"{round((x+w)/sw, 3)}x{round((y+h)/sh, 3)}"
+
+print(coord1, coord2)
+subprocess.run(["swaymsg", "input", "*", "map_from_region", coord1, coord2])

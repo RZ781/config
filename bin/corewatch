@@ -1,0 +1,11 @@
+#!/bin/sh
+
+exec >/dev/null 2>&1
+
+while true ; do
+	if ls ~/core.* ; then
+		swaynag -m "A core dump was found in your home directory"
+		exit
+	fi
+	sleep 1
+done

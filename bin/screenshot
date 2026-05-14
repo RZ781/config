@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tmp_filename="/tmp/screenshot-$RANDOM"
+printf -v filename "$HOME/Pictures/%(%Y%m%d_%Hh%Mm%Ss)T_grim.png" -1
+grim $tmp_filename
+imv $tmp_filename -f &
+grim -g "$(slurp)" "$filename"
+kill %1
+wl-copy --type image/png < "$filename"
+rm $tmp_filename

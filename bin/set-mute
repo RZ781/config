@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if pactl get-source-mute @DEFAULT_SOURCE@ | grep yes ; then
+	mute=0
+else
+	mute=1
+fi
+
+for src in $(pactl list short sources | awk '{print $1}'); do
+	pactl set-source-mute "$src" $mute
+done

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+BACKUP_DIR="/var/home-backup"
+BACKUP_TARBALL_PATH="/tmp/home-backup-$$-$(date -Iseconds).tar.gz"
+
+echo "backing up to $BACKUP_DIR"
+rsync -aU --delete \
+	--filter "- .config/chromium" \
+	--filter "- .cache" \
+	--filter "- .local/share" \
+	--filter "- .local/state" \
+	--filter "- .var" \
+	--filter "- .dotnet" \
+	--filter "- .nuget" \
+	--filter "- vm" \
+	--filter "- *.iso" \
+	--filter "- go" \
+	--filter "- *.AppImage" \
+	--filter "- Downloads/discord.zip" \
+	"$HOME" "$BACKUP_DIR"
+
+cd "$BACKUP_DIR"
+
+echo "generating tarball in $BACKUP_TARBALL_PATH"
+time tar -c . | gzip > "$BACKUP_TARBALL_PATH"
+
+echo "encrypting tarball"
+time gpg -c "$BACKUP_TARBALL_PATH"
+if [ ! -r "${BACKUP_TARBALL_PATH}.gpg" ] ; then
+	echo "failed to encrypt"
+	exit 1
+fi
+
+echo "uploading backup to rclone remote $RCLONE_REMOTE"
+time rclone copy -P "${BACKUP_TARBALL_PATH}.gpg" "${RCLONE_REMOTE}:"
+
+echo "removing temporary files"
+rm "$BACKUP_TARBALL_PATH" "${BACKUP_TARBALL_PATH}.gpg"
