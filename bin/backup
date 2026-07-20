@@ -17,6 +17,9 @@ rsync -aU --delete \
 	--filter "- go" \
 	--filter "- *.AppImage" \
 	--filter "- Downloads/discord.zip" \
+	--filter "- container" \
+	--filter "- .wine" \
+	--filter "- venv" \
 	"$HOME" "$BACKUP_DIR"
 
 cd "$BACKUP_DIR"

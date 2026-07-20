@@ -55,6 +55,7 @@ input type:pointer {
 
 bindsym --to-code $mod+Shift+a input type:keyboard xkb_switch_layout 0
 bindsym --to-code $mod+Shift+s input type:keyboard xkb_switch_layout 1
+bindsym --to-code $mod+g exec borderless-fullscreen
 
 mode "nested" {
 	bindsym XF86Assistant mode "default"

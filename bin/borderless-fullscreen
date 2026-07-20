@@ -1,0 +1,6 @@
+#!/bin/sh
+
+swaymsg floating enable
+swaymsg border none
+swaymsg resize set 2560 1600
+swaymsg move absolute position 0 0
