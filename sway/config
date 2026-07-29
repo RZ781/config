@@ -240,6 +240,7 @@ include /etc/sway/config.d/*
 exec pipewire
 exec gammastep -O 5000
 exec corewatch
+exec dbus-update-activation-environment --all
 
 assign [app_id="chromium"] 1
 for_window [app_id="chromium"] focus
