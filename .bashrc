@@ -59,7 +59,6 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	FMT_BLUE="\[\e[01;34m\]"
 	FMT_YELLOW="\[\e[01;33m\]"
 fi
-_PS1="$FMT_RESET$FMT_GREEN\u@void-linux$FMT_RESET:$FMT_BLUE\w$FMT_RESET$ "
 PS1="$FMT_RESET\t $FMT_YELLOW(\j) $FMT_GREEN\u@\H$FMT_RESET:$FMT_BLUE\w$FMT_RESET$ "
 
 # If this is an xterm set the title to user@host:dir

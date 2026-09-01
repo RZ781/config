@@ -198,7 +198,7 @@ bindsym --to-code $mod+r mode "resize"
     bindsym Print exec GRIM_DEFAULT_DIR="${HOME}/Pictures" screenshot
     bindsym XF86SelectiveScreenshot exec GRIM_DEFAULT_DIR="${HOME}/Pictures" screenshot
     bindsym Xf86PowerOff exec swaynag -t warning -m 'Do you want to power off?' -B 'Power off' 'foot'
-    bindsym XF86Bluetooth output eDP-1 power toggle
+    bindsym --locked XF86Bluetooth output eDP-1 power toggle
 #
 # Status Bar:
 #
@@ -241,6 +241,7 @@ exec pipewire
 exec gammastep -O 5000
 exec corewatch
 exec dbus-update-activation-environment --all
+exec fcitx5
 
 assign [app_id="chromium"] 1
 for_window [app_id="chromium"] focus
