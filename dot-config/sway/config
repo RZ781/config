@@ -206,6 +206,10 @@ bindsym --to-code $mod+r mode "resize"
 bar {
     id bar1
     position top
+    tray_output *
+    tray_bindsym button1 Activate
+    tray_bindsym button3 ContextMenu
+    tray_bindsym button2 SecondaryActivate
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
